@@ -10,7 +10,7 @@ import (
 
 func main() {
 	// Read JSON file
-	jsonFile, err := ioutil.ReadFile("data.json")
+	jsonFile, err := ioutil.ReadFile("*.json")
 	if err != nil {
 		fmt.Println("Error reading JSON file:", err)
 		return
