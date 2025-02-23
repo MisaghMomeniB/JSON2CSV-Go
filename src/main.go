@@ -6,11 +6,23 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"path/filepath"
 )
 
 func main() {
-	// Read JSON file
-	jsonFile, err := ioutil.ReadFile("*.json")
+	// Find all JSON files in the current directory
+	jsonFiles, err := filepath.Glob("*.json")
+	if err != nil || len(jsonFiles) == 0 {
+		fmt.Println("No JSON files found.")
+		return
+	}
+
+	// Use the first JSON file found
+	jsonFileName := jsonFiles[0]
+	fmt.Println("Processing file:", jsonFileName)
+
+	// Read the JSON file
+	jsonFile, err := ioutil.ReadFile(jsonFileName)
 	if err != nil {
 		fmt.Println("Error reading JSON file:", err)
 		return
@@ -30,8 +42,9 @@ func main() {
 		return
 	}
 
-	// Create CSV file
-	csvFile, err := os.Create("output.csv")
+	// Create CSV file (same name as JSON but with .csv extension)
+	csvFileName := jsonFileName[:len(jsonFileName)-5] + ".csv"
+	csvFile, err := os.Create(csvFileName)
 	if err != nil {
 		fmt.Println("Error creating CSV file:", err)
 		return
@@ -61,5 +74,5 @@ func main() {
 		writer.Write(row)
 	}
 
-	fmt.Println("JSON to CSV conversion successful!")
+	fmt.Println("JSON to CSV conversion successful! Output:", csvFileName)
 }
