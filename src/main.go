@@ -25,7 +25,7 @@ func main() {
 	jsonFile, err := ioutil.ReadFile(jsonFileName)
 	if err != nil {
 		fmt.Println("Error reading JSON file:", err) // Print error if file cannot be read
-		return                                      // Exit the program
+		return                                       // Exit the program
 	}
 
 	// Convert JSON to a slice of maps
@@ -33,13 +33,13 @@ func main() {
 	err = json.Unmarshal(jsonFile, &records)
 	if err != nil {
 		fmt.Println("Error processing JSON:", err) // Print error if JSON parsing fails
-		return                                    // Exit the program
+		return                                     // Exit the program
 	}
 
 	// Check if JSON contains data
 	if len(records) == 0 {
 		fmt.Println("JSON file is empty or has an invalid format.") // Print message if JSON is empty
-		return                                                     // Exit the program
+		return                                                      // Exit the program
 	}
 
 	// Create CSV file (same name as JSON but with .csv extension)
@@ -47,12 +47,12 @@ func main() {
 	csvFile, err := os.Create(csvFileName)
 	if err != nil {
 		fmt.Println("Error creating CSV file:", err) // Print error if file creation fails
-		return                                      // Exit the program
+		return                                       // Exit the program
 	}
 	defer csvFile.Close() // Ensure the file is closed when the function exits
 
 	writer := csv.NewWriter(csvFile) // Create a new CSV writer
-	defer writer.Flush()              // Ensure data is written to file before closing
+	defer writer.Flush()             // Ensure data is written to file before closing
 
 	// Write CSV headers (JSON keys)
 	headers := make([]string, 0, len(records[0])) // Create a slice for CSV headers
@@ -62,7 +62,7 @@ func main() {
 	writer.Write(headers) // Write headers to the CSV file
 
 	// Write data rows
-	for _, record := range records {         // Loop through each JSON object
+	for _, record := range records { // Loop through each JSON object
 		row := make([]string, len(headers)) // Create a slice for CSV row data
 		for i, header := range headers {    // Loop through headers
 			if val, ok := record[header]; ok {
