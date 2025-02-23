@@ -23,3 +23,9 @@ func main() {
 		fmt.Println("Error processing JSON:", err)
 		return
 	}
+
+	// Check if JSON contains data
+	if len(records) == 0 {
+		fmt.Println("JSON file is empty or has an invalid format.")
+		return
+	}
