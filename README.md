@@ -1,109 +1,125 @@
-# 📜 JSON to CSV Converter in Go  
+# 🧰 JSON2CSV-Go
 
-## 🚀 Overview  
-This Go program reads a JSON file from the current directory, converts its data into CSV format, and saves it as a new file. It automatically detects JSON files and processes the first one found. The program is simple, efficient, and useful for transforming structured JSON data into a tabular CSV format.
-
----
-
-## 🔧 Features  
-✅ **Automatic File Detection** – Finds the first JSON file in the directory.  
-✅ **JSON Parsing** – Reads and decodes JSON into a structured format.  
-✅ **Dynamic CSV Generation** – Extracts headers dynamically from JSON keys.  
-✅ **Error Handling** – Provides clear messages for errors like missing files or malformed JSON.  
-✅ **Efficient Writing** – Uses Go’s built-in CSV writer for optimal performance.  
+A lightweight and efficient **JSON to CSV converter** written in Go. It reads a JSON array of objects, dynamically extracts headers, and writes correct tabular CSV output—ideal for data processing workflows and automation scripts.
 
 ---
 
-## 📂 File Conversion Process  
-1️⃣ **Finds a JSON file** in the current directory.  
-2️⃣ **Reads the file** and parses its contents into a Go slice of maps.  
-3️⃣ **Extracts keys** from the JSON data to generate CSV headers.  
-4️⃣ **Writes the CSV file**, converting values to strings.  
-5️⃣ **Saves the output** with the same filename but with a `.csv` extension.  
+## 📋 Table of Contents
+
+1. [Overview](#overview)  
+2. [Features](#features)  
+3. [Requirements](#requirements)  
+4. [Installation](#installation)  
+5. [Usage](#usage)  
+6. [Code Structure](#code-structure)  
+7. [Error Handling](#error-handling)  
+8. [Contributing](#contributing)  
+9. [License](#license)
 
 ---
 
-## 🛠️ Installation & Usage  
+## 💡 Overview
 
-### 🔹 Prerequisites  
-Make sure you have **Go installed** on your system. If not, download it from [golang.org](https://golang.org/dl/).  
+This Go-based CLI tool—complete with reusable package code—automatically:
 
-### 🔹 Running the Program  
+- Finds the first JSON file in the working directory  
+- Parses it into a slice of Go maps  
+- Extracts dynamic headers from keys  
+- Converts and exports as a `.csv` file  
+- Supports both direct `go run` usage and `go build` for installing the binary :contentReference[oaicite:1]{index=1}
 
-1️⃣ Clone this repository or copy the `main.go` file to your working directory.  
+---
+
+## ✅ Features
+
+- 🔍 **Auto-detection**: Identifies the first `.json` file in the directory :contentReference[oaicite:2]{index=2}  
+- 🧩 **Dynamic Headers**: Builds CSV headers based on JSON keys from first entry :contentReference[oaicite:3]{index=3}  
+- 💾 **CSV Export**: Writes a `.csv` file with the same base name as input :contentReference[oaicite:4]{index=4}  
+- 🚫 **Handles Missing Fields**: Missing keys render as empty CSV values :contentReference[oaicite:5]{index=5}  
+- 🚨 **Error Reporting**: Simple messages for missing files or malformed JSON :contentReference[oaicite:6]{index=6}
+
+---
+
+## 🧾 Requirements
+
+- Go **1.18+** (modules enabled)  
+- No external dependencies—uses Go standard `encoding/json` and `encoding/csv`
+
+---
+
+## ⚙️ Installation
+
+### Local build
 ```bash
-git clone https://github.com/yourusername/json-to-csv-go.git
-cd json-to-csv-go
-```
-   
-2️⃣ Place a JSON file in the same directory as `main.go`. Example JSON format:
-```json
-[
-    {"name": "Alice", "age": 25, "city": "New York"},
-    {"name": "Bob", "age": 30, "city": "San Francisco"}
-]
-```
+git clone https://github.com/MisaghMomeniB/JSON2CSV-Go.git
+cd JSON2CSV-Go/src
+go build -o json2csv main.go
+````
 
-3️⃣ Run the program:  
+### Run directly
+
 ```bash
-go run main.go
-```
-
-4️⃣ The CSV file will be generated in the same directory with the same name as the JSON file.  
-
----
-
-## 📝 Example Output  
-
-### ✅ Input (`data.json`):  
-```json
-[
-    {"name": "John", "age": 28, "country": "USA"},
-    {"name": "Sara", "age": 24, "country": "Canada"}
-]
-```
-
-### ✅ Output (`data.csv`):  
-```csv
-name,age,country
-John,28,USA
-Sara,24,Canada
+go run src/main.go
 ```
 
 ---
 
-## 🏗 Code Explanation  
+## 🚀 Usage
 
-### 1️⃣ **Finding JSON Files**  
-The program uses `filepath.Glob("*.json")` to find JSON files in the current directory. If no files are found, it prints a message and exits.  
+Place a JSON file (array of objects) in your folder and execute:
 
-### 2️⃣ **Reading & Parsing JSON**  
-The JSON file is read using `ioutil.ReadFile()` and then parsed into a slice of maps using `json.Unmarshal()`. Each map represents a JSON object.  
+```bash
+# e.g. data.json → data.csv
+./json2csv
+```
 
-### 3️⃣ **Extracting Headers for CSV**  
-The first JSON object is used to extract keys dynamically, which become the headers for the CSV file.  
-
-### 4️⃣ **Writing Data to CSV**  
-A new CSV file is created, and the extracted headers are written as the first row. Each JSON object is then written as a new row, with values converted to strings using `fmt.Sprintf("%v", val)`.  
-
-### 5️⃣ **Error Handling**  
-Errors like missing files, unreadable JSON, or file creation failures are handled gracefully with informative messages.  
+The tool reads `*.json`, converts it to CSV, and writes `*.csv`.
 
 ---
 
-## 📌 Notes  
-⚡ **Only the first JSON file found is processed.**  
-⚡ **Assumes JSON is an array of objects (not a single object).**  
-⚡ **Handles missing keys by inserting empty values in CSV.**  
+## 📁 Code Structure
+
+```
+JSON2CSV-Go/
+├── src/
+│   └── main.go         # CLI entrypoint and conversion logic
+├── README.md           # This file
+└── LICENSE             # MIT License
+```
+
+* `main.go`:
+
+  * Finds JSON file via `filepath.Glob("*.json")`
+  * Loads JSON into `[]map[string]interface{}`
+  * Extracts keys from first element
+  * Outputs CSV using `encoding/csv`
 
 ---
 
-## 📜 License  
-This project is open-source and licensed under the MIT License. Feel free to use, modify, and share! 🚀  
+## ⚠️ Error Handling
+
+* Exits with a message if no JSON files found
+* Reports parsing errors for invalid JSON
+* Gracefully handles write failures
 
 ---
 
-## 💡 Contributions  
-Have an idea to improve this tool? Feel free to fork, submit issues, or create a pull request. Contributions are always welcome! 🎉  
+## 🤝 Contributing
 
-Happy coding! 💻🚀
+Improvements welcome! Consider adding:
+
+* Support for nested JSON arrays or pointers
+* CLI flags (e.g., custom file paths, headers)
+* Batch file processing
+
+To contribute:
+
+1. Fork the repo
+2. Create a feature branch
+3. Submit a PR with clear descriptions
+
+---
+
+## 📄 License
+
+Distributed under the **MIT License**. See [LICENSE](LICENSE) for details.
